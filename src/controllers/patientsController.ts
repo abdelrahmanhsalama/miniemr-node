@@ -2,6 +2,7 @@ import { AppError } from "../utils/AppError.js";
 import { Request, Response, NextFunction } from "express";
 import {
   createPatientQuery,
+  getOnePatientQuery,
   getPatientsQuery,
   queryPatientsQuery,
   updatePatientQuery,
@@ -14,11 +15,12 @@ export async function createPatient(
   next: NextFunction,
 ) {
   try {
-    const { name, national_id, dob, gender, phone } = req.body;
+    const { firstName, lastName, nationalId, dob, gender, phone } = req.body;
 
     await createPatientQuery(
-      name.trim(),
-      national_id.trim(),
+      firstName.trim(),
+      lastName.trim(),
+      nationalId.trim(),
       dob.trim(),
       gender,
       phone.trim(),
@@ -69,6 +71,22 @@ export async function getPatients(
   }
 }
 
+export async function getOnePatient(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { mrn } = req.params;
+
+    const patient = await getOnePatientQuery(Number(mrn));
+
+    res.json({ success: true, data: { patient } });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function updatePatient(
   req: Request,
   res: Response,
@@ -76,12 +94,12 @@ export async function updatePatient(
 ) {
   try {
     const { id: patient_id } = req.params;
-    console.log(patient_id);
-    const { name, national_id, dob, gender, phone } = req.body;
+    const { firstName, lastName, nationalId, dob, gender, phone } = req.body;
 
     await updatePatientQuery(
-      name.trim(),
-      national_id.trim(),
+      firstName.trim(),
+      lastName.trim(),
+      nationalId.trim(),
       dob.trim(),
       gender,
       phone.trim(),

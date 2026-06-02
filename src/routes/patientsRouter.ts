@@ -5,6 +5,7 @@ import { validatePatient } from "../utils/validations.js";
 import { validateReq } from "../middlewares/validateReq.js";
 import {
   createPatient,
+  getOnePatient,
   getPatients,
   updatePatient,
 } from "../controllers/patientsController.js";
@@ -19,12 +20,16 @@ patientsRouter.post(
   validateReq,
   createPatient,
 );
+
 patientsRouter.get(
   "/",
   addIdRole,
-  checkRoles("admin", "admission"),
+  checkRoles("admin", "admission", "doctor"),
   getPatients,
 );
+
+patientsRouter.get("/:mrn", getOnePatient);
+
 patientsRouter.put(
   "/:id",
   addIdRole,

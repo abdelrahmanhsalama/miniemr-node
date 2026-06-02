@@ -93,16 +93,25 @@ export const validateReverseActivation = [
 ];
 
 export const validatePatient = [
-  body("name")
+  body("firstName")
     .notEmpty()
-    .withMessage("Name required")
+    .withMessage("First name required")
     .isString()
     .withMessage("Name must be a string")
     .matches(/^[a-zA-Z0-9.\- ]+$/)
     .withMessage(
-      "Name can only contain letters, numbers, periods (dots), hyphens, and spaces",
+      "First name can only contain letters, numbers, periods (dots) and hyphens",
     ),
-  body("national_id")
+  body("lastName")
+    .notEmpty()
+    .withMessage("Last name required")
+    .isString()
+    .withMessage("Name must be a string")
+    .matches(/^[a-zA-Z0-9.\- ]+$/)
+    .withMessage(
+      "Last mame can only contain letters, numbers, periods (dots) and hyphens",
+    ),
+  body("nationalId")
     .notEmpty()
     .withMessage("National ID required")
     .isString()
